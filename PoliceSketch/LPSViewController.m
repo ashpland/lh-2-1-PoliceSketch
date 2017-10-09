@@ -7,8 +7,11 @@
 //
 
 #import "LPSViewController.h"
+#import "Face.h"
 
 @interface LPSViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *eyeImageView;
+@property (nonatomic, strong) Face *faceControl;
 
 @end
 
@@ -18,7 +21,27 @@
 {
     [super viewDidLoad];
 	
+    self.faceControl = [Face new];
+    
+    self.eyeImageView.image = [UIImage imageNamed:[self.faceControl getFeature:eyes]];
+    
+    
     // Here is where you will create the buttons & image views and add them to the view.
 }
+
+- (IBAction)nextEyeButton:(id)sender {
+    [self.faceControl changeFeature:eyes inDirection:forwards];
+    self.eyeImageView.image = [UIImage imageNamed:[self.faceControl getFeature:eyes]];
+
+}
+- (IBAction)previousEyeButton:(id)sender {
+    [self.faceControl changeFeature:eyes inDirection:backwards];
+    self.eyeImageView.image = [UIImage imageNamed:[self.faceControl getFeature:eyes]];
+
+
+}
+
+
+
 
 @end
