@@ -8,6 +8,11 @@
 
 #import "Face.h"
 
+@interface Face()
+    @property (nonatomic, strong) NSArray<NSArray <NSString *>*> *facialFeatureImages;
+    @property (nonatomic, strong) NSMutableArray<NSNumber *> *currentFacialFeature;
+@end
+
 @implementation Face
 
 - (instancetype)init
@@ -28,17 +33,18 @@
     return self;
 }
 
--(void)changeFeature:(FacialFeature)facialFeature
-         inDirection:(MovementDirection)direction
+-(UIImage *)getNewFeature:(FacialFeature)facialFeature in:(MovementDirection)direction
 {
+    if ([self.currentFacialFeature[facialFeature] isEqual:@0]) {
+        self.currentFacialFeature[facialFeature] = @5;
+    }
     self.currentFacialFeature[facialFeature] = direction ?
     [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] + 1) % 5)] :
     [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] - 1) % 5)];
-}
+    
+    return [UIImage imageNamed: [self.facialFeatureImages[facialFeature]
+            objectAtIndex: [self.currentFacialFeature[facialFeature] intValue]]];
 
--(NSString *)getFeature:(FacialFeature)facialFeature
-{
-    return [self.facialFeatureImages[facialFeature] objectAtIndex: [self.currentFacialFeature[facialFeature] intValue]];
 }
 
 @end
