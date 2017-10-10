@@ -20,14 +20,24 @@
     self = [super init];
     if (self) {
         
-        _facialFeatureImages = @[
-                             @[@"eyes_1.jpg",@"eyes_2.jpg",@"eyes_3.jpg",@"eyes_4.jpg",@"eyes_5.jpg"],                             @[@"nose_1.jpg",@"nose_2.jpg",@"nose_3.jpg",@"nose_4.jpg",@"nose_5.jpg"],                         @[@"mouth_1.jpg",@"mouth_2.jpg",@"mouth_3.jpg",@"mouth_4.jpg",@"mouth_5.jpg"]
-                                 ];
-        _currentFacialFeature = @[
-                                  [NSNumber numberWithInt:arc4random_uniform(5)],
-                                  [NSNumber numberWithInt:arc4random_uniform(5)],
-                                  [NSNumber numberWithInt:arc4random_uniform(5)]
-                                  ].mutableCopy;
+        NSArray *facialFeaturesToAdd = @[@"eyes", @"nose", @"mouth"];
+        NSMutableArray<NSMutableArray<NSString *> *> *imageArray = [NSMutableArray new];
+        
+        for (NSString *feature in facialFeaturesToAdd) {
+            NSMutableArray *featureImages = [NSMutableArray new];
+            for (int i = 1; i <= 5; i++) {
+                [featureImages addObject:[NSString stringWithFormat:@"%@_%d.jpg", feature, i]];
+            }
+            [imageArray addObject:featureImages];
+        }
+        _facialFeatureImages = imageArray;
+        
+        
+        _currentFacialFeature = [NSMutableArray new];
+        for (int i = 0; i < 3; i++) {
+            [self.currentFacialFeature addObject:[NSNumber numberWithInt:arc4random_uniform(5)]];
+        }
+        
 
     }
     return self;
@@ -39,8 +49,8 @@
         self.currentFacialFeature[facialFeature] = @5;
     }
     self.currentFacialFeature[facialFeature] = direction ?
-    [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] + 1) % 5)] :
-    [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] - 1) % 5)];
+        [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] + 1) % 5)] :
+        [NSNumber numberWithInt:(([self.currentFacialFeature[facialFeature] intValue] - 1) % 5)];
     
     return [UIImage imageNamed: [self.facialFeatureImages[facialFeature]
             objectAtIndex: [self.currentFacialFeature[facialFeature] intValue]]];
